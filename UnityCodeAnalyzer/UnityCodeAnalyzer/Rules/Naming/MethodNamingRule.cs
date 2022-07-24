@@ -65,6 +65,14 @@ namespace UnityCodeAnalyzer.Rules
         private static void Analyze(SymbolAnalysisContext context)
         {
             var methodSymbol = (IMethodSymbol)context.Symbol;
+            if (methodSymbol.MethodKind == MethodKind.Constructor   || 
+                methodSymbol.MethodKind == MethodKind.Destructor    ||
+                methodSymbol.MethodKind == MethodKind.PropertyGet   ||
+                methodSymbol.MethodKind == MethodKind.PropertySet )
+            {
+                return;
+            }
+
             if (methodSymbol.DeclaredAccessibility == Accessibility.Public)
             {
                 AnalyzePublicMethod(context, methodSymbol, PublicMethodFormatDesc);
